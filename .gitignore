@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+config.json
+*.sqlite3
+*.sqlite3-*
+result.json
+ChatExport*/
