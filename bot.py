@@ -138,7 +138,15 @@ def api(token, method, **payload):
 
 
 def run(db, config):
-    token = os.environ['BOT_TOKEN']
+    try:
+        from local_settings import BOT_TOKEN
+    except ModuleNotFoundError as exc:
+        if exc.name != 'local_settings':
+            raise
+        BOT_TOKEN = ''
+    token = BOT_TOKEN.strip() or os.environ.get('BOT_TOKEN', '').strip()
+    if not token:
+        raise ValueError('Вставьте токен от BotFather в BOT_TOKEN в файле local_settings.py')
     chat, source, target = (int(config[k]) for k in ('chat_id', 'source_topic_id', 'target_topic_id'))
     if source == target:
         raise ValueError('Укажите разные исходный и итоговый топики')
